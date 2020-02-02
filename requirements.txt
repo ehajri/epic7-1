@@ -1,0 +1,6 @@
+Jupyter
+Pillow
+pytesseract
+opencv-python
+matplotlib
+imageio
