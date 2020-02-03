@@ -13,7 +13,7 @@ from matplotlib import pyplot as plt
 resolution = "1600"
 files = [
     #"screenshots/ss2.png", "screenshots/ss3.png", "screenshots/ss4.png", "screenshots/ss1.jpg", "screenshots/ss5.png", "screenshots/ss6.png", "screenshots/ss7.png",
-    "screenshots/ss9.png"]
+    "screenshots/ss10.png"]
 marks = ["e7/top.jpg", "e7/mark.png"]
 coords = COORDS[resolution]
 
