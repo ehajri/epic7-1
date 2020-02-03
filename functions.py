@@ -18,9 +18,11 @@ SET_COORD = [[280, 340], [76, 435]]
 COORDS = {
     "1600": {
         "MARK": "e7/mark.png",
-        "LVL": [[35, 82], [58, 116]],
-        "PLUS": [[13, 65], [220, 270]],
-        "TYPE": [[35, 95], [280, 650]],
+        "TOP": {
+            "LVL": [[35, 82], [58, 116]],
+            "PLUS": [[13, 65], [220, 270]],
+            "TYPE": [[35, 95], [280, 650]]
+        },
         "BOTTOM": {
             "MAIN": [[25, 110], [105, 665]],
             "SUBS": [[150, 400], [25, 655]],
@@ -41,7 +43,7 @@ export = {"processVersion": "1", "heroes": [], "items": []}
 
 # refactor this function
 def process(k, img):
-    if not(k in ['level', 'plus']):
+    if not(k in ['LVL', 'PLUS']):
         thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
         low = 0
         proc = cv2.cvtColor(cv2.medianBlur(
