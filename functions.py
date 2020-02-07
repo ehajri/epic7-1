@@ -1,6 +1,8 @@
 import cv2
 from pytesseract import image_to_string
 from PIL import Image
+from matplotlib import pyplot as plt
+
 TOP_IMG = 'e7/top.jpg'
 BOTTOM_IMG = 'e7/bottom.jpg'
 
@@ -24,7 +26,7 @@ COORDS = {
         "TOP": {
             "LVL": [[35, 82], [58, 116]],
             "PLUS": [[13, 65], [220, 270]],
-            "TYPE": [[35, 110], [280, 650]]
+            "TYPE": [[35, 155], [280, 650]]
         },
         "BOTTOM": {
             "MAIN": [[25, 110], [105, 665]],
@@ -46,13 +48,25 @@ export = {"processVersion": "1", "heroes": [], "items": []}
 
 # refactor this function
 def process(k, img):
-    if not(k in ['LVL', 'PLUS']):
+    if not(k in ['LVL', 'PLUS', 'TYPE']):
         thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
         low = 0
         proc = cv2.cvtColor(cv2.medianBlur(
-            cv2.threshold(cv2.cvtColor(cv2.resize(img, (0, 0), fx=10, fy=10), cv2.COLOR_BGR2GRAY), low, 255, thresh)[1],
+            cv2.threshold(cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 255, thresh)[1],
             3), cv2.COLOR_GRAY2RGB)
         return image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
+    if k == 'TYPE':
+        thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
+        proc = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        low = 1
+        proc = cv2.medianBlur(
+            cv2.threshold(cv2.resize(proc, (0, 0), fx=5, fy=5), low, 150, thresh)[1],
+            3)
+        low = 0
+        plt.subplot(1,1,1), plt.imshow(proc), plt.show()
+        x = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
+        print(repr(x))
+        return x
 
     thresh = cv2.THRESH_BINARY
     low = 50

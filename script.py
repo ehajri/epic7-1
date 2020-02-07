@@ -48,7 +48,7 @@ def analyze(img, debug=False):
     export = {}
     for k in top_coords:
         crds = top_coords[k]
-        data = process(k, top_box[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]])
+        data = process(k, top_box.copy()[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]])
         if k == 'LVL':
             export["ilvl"] = digit_filter(data.replace('S', '5').replace('B', '8').replace('a', '8'))
 
@@ -57,7 +57,6 @@ def analyze(img, debug=False):
                 data.replace('S', '5').replace('B', '8').replace('a', '8').replace('19', '15'))
 
         if k == 'TYPE':
-            if debug: draw(top_box, crds)
             export["grade"] = char_filter(data.split(' ')[0])
             export["slot"] = char_filter(data.split(' ')[1].split('\n')[0])
 
@@ -88,10 +87,11 @@ def analyze(img, debug=False):
 files = ['ss8.png', 'ss10.png', 'ss11.png', 'ss12.png', 'ss13.png', 'ss14.png', 'ss15.png', 'ss16.png', 'ss17.png']
 from jsondiff import diff
 for file in files:
-    if file != 'ss11.png': continue
-    if file == 'ss11.png':
+    xx = '14'
+    if file != 'ss'+xx+'.png': continue
+    if file == 'ss'+xx+'.png':
         e = analyze(cv2.imread("screenshots/"+file), True)
-    e = analyze(cv2.imread("screenshots/" + file))
+    #e = analyze(cv2.imread("screenshots/" + file))
     v = gear[file]
     r = e == v
     if r:
