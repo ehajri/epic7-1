@@ -47,46 +47,62 @@ COORDS = {
 export = {"processVersion": "1", "heroes": [], "items": []}
 
 # refactor this function
-def process(k, img):
+def process(k, imgg, img):
     if not(k in ['LVL', 'PLUS', 'TYPE']):
         thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
         low = 0
-        proc = cv2.cvtColor(cv2.medianBlur(
-            cv2.threshold(cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 255, thresh)[1],
-            3), cv2.COLOR_GRAY2RGB)
+        proc = cv2.medianBlur(
+            cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
+            3)
         return image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
     if k == 'TYPE':
-        thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
-        proc = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-        low = 1
         proc = cv2.medianBlur(
-            cv2.threshold(cv2.resize(proc, (0, 0), fx=5, fy=5), low, 150, thresh)[1],
+            cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
             3)
-        low = 0
-        plt.subplot(1,1,1), plt.imshow(proc), plt.show()
         x = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
-        print(repr(x))
-        return x
+        return x.replace('delmet', 'Helmet')
 
     thresh = cv2.THRESH_BINARY
     low = 50
-    proc = cv2.cvtColor(cv2.medianBlur(
-        cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 255, thresh)[1],
-        3), cv2.COLOR_GRAY2RGB)
-    data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-    if not any(i.isdigit() for i in data):
-        low = 100
+    while low <= 125:
+        # proc = cv2.cvtColor(cv2.medianBlur(
+        #     cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
+        #     3), cv2.COLOR_GRAY2RGB)
         proc = cv2.cvtColor(cv2.medianBlur(
-            cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 255, thresh)[
-                1], 3), cv2.COLOR_GRAY2RGB)
+            cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 200, thresh)[1],
+            3), cv2.COLOR_GRAY2RGB)
+        # plt.subplot(1,1,1), plt.imshow(proc), plt.show()
         data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
         if not any(i.isdigit() for i in data):
-            low = 125
-            proc = cv2.cvtColor(cv2.medianBlur(
-                cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 255,
-                              thresh)[1], 3), cv2.COLOR_GRAY2RGB)
-            data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
+            if low == 50:
+                low = 100
+            elif low == 100:
+                low = 125
+            else:
+                break
+        else:
+            break
     return data
+
+    # proc = cv2.cvtColor(cv2.medianBlur(
+    #     cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
+    #     3), cv2.COLOR_GRAY2RGB)
+    # plt.subplot(1, 1, 1), plt.imshow(proc), plt.show()
+    # data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
+    # if not any(i.isdigit() for i in data):
+    #     low = 100
+    #     proc = cv2.cvtColor(cv2.medianBlur(
+    #         cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[
+    #             1], 3), cv2.COLOR_GRAY2RGB)
+    #     plt.subplot(1,1,1), plt.imshow(proc), plt.show()
+    #     data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
+    #     if not any(i.isdigit() for i in data):
+    #         low = 125
+    #         proc = cv2.cvtColor(cv2.medianBlur(
+    #             cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255,
+    #                           thresh)[1], 3), cv2.COLOR_GRAY2RGB)
+    #         plt.subplot(1, 1, 1), plt.imshow(proc), plt.show()
+    #         data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
 
 
 def stat_converter(stat):
@@ -117,7 +133,10 @@ def stat_converter(stat):
 
 
 def digit_filter(val):
-    return int(''.join(filter(str.isdigit, val)))
+    try:
+        return int(''.join(filter(str.isdigit, val)))
+    except:
+        return 0
 
 
 def char_filter(val):

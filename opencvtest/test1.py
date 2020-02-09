@@ -3,13 +3,13 @@ from matplotlib import pyplot as plt
 from pytesseract import image_to_string
 from PIL import Image
 
-img = cv2.imread("screenshots/ss12.png")
+img = cv2.imread("screenshots/ss14.png")
 
 # 1385, 412
 # w: 412
 # h: 199
 # 1797, 611
-gear_type = img[412:611, 1385:1797]
+gear_type = img[400:510, 1385:1797]
 
 def draw(img):
     plt.subplot(1,1,1), plt.imshow(img), plt.show()
@@ -29,25 +29,19 @@ def apply_threshold(img, argument):
     }
     return switcher.get(argument, "Invalid method")
 
-g = gear_type.copy()
-image = g
-white = [[60, 60, 60], [206, 206, 206], [115, 115, 115]]
-x = 30
+def read(img):
+    return image_to_string(Image.fromarray(img), lang='eng', config='--psm 6')
+
+brown_lo=np.array([54,54,54])
+brown_hi=np.array([255,255,255])
+
+# Mask image to only select browns
+hsv = cv2.cvtColor(gear_type, cv2.COLOR_BGR2HSV)
+mask = cv2.inRange(hsv,brown_lo,brown_hi)
+gear_type[mask!=0]=(0,0,0)
+
+#[[60, 60, 60], [206, 206, 206], [115, 115, 115]]
 #image[np.where((image >= [x,x,x]).all(axis=2))] = [0,0,0]
-data = image_to_string(Image.fromarray(image), lang='eng', config='--psm 6')
-#draw(image)
-a = data.split("\n")
-print(a[0])
-print(len(a))
-print(repr(data))
-# draw(g)
-# draw(cv2.subtract(100, g))
-g = get_grayscale(g)
-# kernel = np.ones((1, 1), np.uint8)
-# img = cv2.dilate(g, kernel, iterations=1)
-# img = cv2.erode(img, kernel, iterations=1)
-#
-# for i in range(1, 8):
-#     print(i)
-#     img = apply_threshold(img.copy(), i)
-#     draw(img)
+
+draw(gear_type)
+print(read(gear_type))

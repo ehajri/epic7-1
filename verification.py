@@ -1,84 +1,34 @@
-
-gear = {
-    "ss8.png": {
-        'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Weapon',
-        'main': {'stat': 'Atk', 'value': 500},
-        'subs': [{'stat': 'Spd', 'value': 3},
-                 {'stat': 'Eff', 'value': 13},
-                 {'stat': 'CChance', 'value': 9},
-                 {'stat': 'Res', 'value': 22}],
-        'set': 'Speed'
-    },
-    "ss10.png": {
-        'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Weapon',
-        'main': {'stat': 'Atk', 'value': 500},
-        'subs': [{'stat': 'CChance', 'value': 9},
-                 {'stat': 'AtkP', 'value': 13},
-                 {'stat': 'HPP', 'value': 11},
-                 {'stat': 'CDmg', 'value': 16}],
-        'set': 'Speed'
-    },
-    "ss11.png": {
-        'ilvl': 88, 'enhance': 15, 'grade': 'Epic', 'slot': 'Ring',
-        'main': {'stat': 'Eff', 'value': 65},
-        'subs': [{'stat': 'HPP', 'value': 18},
-                 {'stat': 'AtkP', 'value': 12},
-                 {'stat': 'Spd', 'value': 8},
-                 {'stat': 'CChance', 'value': 8}],
-        'set': 'Speed'
-    },
-    "ss12.png": {
-        'ilvl': 71, 'enhance': 15, 'grade': 'Epic', 'slot': 'Armor',
-        'main': {'stat': 'Def', 'value': 260},
-        'subs': [{'stat': 'HPP', 'value': 15},
-                 {'stat': 'Spd', 'value': 6},
-                 {'stat': 'CChance', 'value': 2},
-                 {'stat': 'Eff', 'value': 10}],
-        'set': 'Lifesteal'
-    },
-    "ss13.png": {
-        'ilvl': 85, 'enhance': 14, 'grade': 'Heroic', 'slot': 'Weapon',
-        'main': {'stat': 'Atk', 'value': 420},
-        'subs': [{'stat': 'Eff', 'value': 12},
-                 {'stat': 'Res', 'value': 16},
-                 {'stat': 'Spd', 'value': 2},
-                 {'stat': 'AtkP', 'value': 4}],
-        'set': 'Defense'
-    },
-    "ss14.png": {
-        'ilvl': 88, 'enhance': 15, 'grade': 'Epic', 'slot': 'Helmet',
-        'main': {'stat': 'HP', 'value': 2765},
-        'subs': [{'stat': 'AtkP', 'value': 17},
-                 {'stat': 'Spd', 'value': 8},
-                 {'stat': 'Res', 'value': 5},
-                 {'stat': 'Eff', 'value': 10}],
-        'set': 'Attack'
-    },
-    "ss15.png": {
-        'ilvl': 85, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Helmet',
-        'main': {'stat': 'HP', 'value': 2700},
-        'subs': [{'stat': 'DefP', 'value': 17},
-                 {'stat': 'CChance', 'value': 8},
-                 {'stat': 'AtkP', 'value': 13},
-                 {'stat': 'Def', 'value': 29}],
-        'set': 'Destruction'
-    },
-    "ss16.png": {
-        'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Armor',
-        'main': {'stat': 'Def', 'value': 300},
-        'subs': [{'stat': 'CChance', 'value': 18},
-                 {'stat': 'Eff', 'value': 12},
-                 {'stat': 'HPP', 'value': 8},
-                 {'stat': 'CDmg', 'value': 4}],
-        'set': 'Health'
-    },
-    "ss17.png": {
-        'ilvl': 71, 'enhance': 15, 'grade': 'Epic', 'slot': 'Armor',
-        'main': {'stat': 'Def', 'value': 260},
-        'subs': [{'stat': 'HPP', 'value': 19},
-                 {'stat': 'DefP', 'value': 9},
-                 {'stat': 'Spd', 'value': 3},
-                 {'stat': 'Res', 'value': 9}],
-        'set': 'Speed'
-    },
-}
+{'ilvl': 55, 'enhance': 15, 'grade': 'Ppc', 'slot': 'Weapen', 'main': {'stat': 'Atk', 'value': 330}, 'subs': [{'stat': 'AtkP', 'value': 10}, {'stat': 'Spd', 'value': 7}, {'stat': 'CChance', 'value': 8}, {'stat': 'Eff', 'value': 9}], 'set': 'Destructions'}
+{'ilvl': 70, 'enhance': 15, 'grade': 'Epic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 440}, 'subs': [{'stat': 'AtkP', 'value': 7}, {'stat': 'Spd', 'value': 10}, {'stat': 'CChance', 'value': 10}, {'stat': 'Eff', 'value': 11}], 'set': 'Attack'}
+{'ilvl': 70, 'enhance': 15, 'grade': 'Epic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 440}, 'subs': [{'stat': 'CChance', 'value': 8}, {'stat': 'HPP', 'value': 17}, {'stat': 'Eff', 'value': 12}, {'stat': 'CDmg', 'value': 9}], 'set': 'Critical'}
+{'ilvl': 88, 'enhance': 3, 'grade': 'Epic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 164}, 'subs': [{'stat': 'Spd', 'value': 3}, {'stat': 'CChance', 'value': 5}, {'stat': 'HPP', 'value': 11}, {'stat': 'CDmg', 'value': 6}], 'set': 'Health'}
+{'ilvl': 67, 'enhance': 0, 'grade': 'Epic', 'slot': 'Vieapon', 'main': {'stat': 'Atk', 'value': 85}, 'subs': [{'stat': 'HPP', 'value': 7}, {'stat': 'AtkP', 'value': 7}, {'stat': 'CChance', 'value': 4}, {'stat': 'CDmg', 'value': 6}], 'set': 'Rage'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Vieapon', 'main': {'stat': 'Atk', 'value': 500}, 'subs': [{'stat': 'CChance', 'value': 9}, {'stat': 'AtkP', 'value': 13}, {'stat': 'HPP', 'value': 11}, {'stat': 'CDmg', 'value': 16}], 'set': 'Speed'}
+{'ilvl': 88, 'enhance': 15, 'grade': 'Epic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 515}, 'subs': [{'stat': 'HPP', 'value': 6}, {'stat': 'AtkP', 'value': 18}, {'stat': 'Spd', 'value': 10}, {'stat': 'Res', 'value': 11}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 500}, 'subs': [{'stat': 'Eff', 'value': 12}, {'stat': 'HPP', 'value': 14}, {'stat': 'Res', 'value': 14}, {'stat': 'AtkP', 'value': 7}], 'set': 'Speed'}
+{'ilvl': 70, 'enhance': 12, 'grade': 'Epic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 316}, 'subs': [{'stat': 'Eff', 'value': 5}, {'stat': 'CChance', 'value': 9}, {'stat': 'CDmg', 'value': 6}, {'stat': 'HPP', 'value': 14}], 'set': 'Destructions'}
+{'ilvl': 85, 'enhance': 10, 'grade': 'Epic', 'slot': 'Boots', 'main': {'stat': 'Spd', 'value': 24}, 'subs': [{'stat': 'HPP', 'value': 4}, {'stat': 'AtkP', 'value': 8}, {'stat': 'Res', 'value': 9}, {'stat': 'CDmg', 'value': 20}], 'set': 'Defense'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 500}, 'subs': [{'stat': 'Res', 'value': 13}, {'stat': 'CDmg', 'value': 8}, {'stat': 'Eff', 'value': 8}, {'stat': 'HPP', 'value': 14}], 'set': 'Health'}
+{'ilvl': 85, 'enhance': 13, 'grade': 'Heroic', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 390}, 'subs': [{'stat': 'HPP', 'value': 13}, {'stat': 'AtkP', 'value': 9}, {'stat': 'Eff', 'value': 11}, {'stat': 'Spd', 'value': 4}], 'set': 'Attack'}
+{'ilvl': 8, 'enhance': 15, 'grade': 'Kare', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 500}, 'subs': [{'stat': 'CChance', 'value': 13}, {'stat': 'CDmg', 'value': 4}, {'stat': 'HP', 'value': 157}, {'stat': 'AtkP', 'value': 11}], 'set': 'Speed'}
+{'ilvl': 8, 'enhance': 12, 'grade': 'Rare', 'slot': 'Weapon', 'main': {'stat': 'Atk', 'value': 360}, 'subs': [{'stat': 'CChance', 'value': 9}, {'stat': 'AtkP', 'value': 5}, {'stat': 'CDmg', 'value': 5}, {'stat': 'HP', 'value': 158}], 'set': 'Attack'}
+{'ilvl': 77, 'enhance': 15, 'grade': 'Foic', 'slot': 'Elmet', 'main': {'stat': 'HP', 'value': 2360}, 'subs': [{'stat': 'HPP', 'value': 16}, {'stat': 'AtkP', 'value': 11}, {'stat': 'CChance', 'value': 4}, {'stat': 'Eff', 'value': 18}], 'set': 'Attack'}
+{'ilvl': 0, 'enhance': 0, 'grade': 'Rpc', 'slot': 'Ctelmet', 'main': {'stat': 'HP', 'value': 1227}, 'subs': [{'stat': 'CChance', 'value': 4}, {'stat': 'Spd', 'value': 3}, {'stat': 'CDmg', 'value': 3}, {'stat': 'Eff', 'value': 15}], 'set': 'Critical'}
+{'ilvl': 88, 'enhance': 15, 'grade': 'Enic', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 2765}, 'subs': [{'stat': 'HPP', 'value': 18}, {'stat': 'DefP', 'value': 19}, {'stat': 'Spd', 'value': 4}, {'stat': 'Res', 'value': 10}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 7, 'grade': 'Heroic', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 1296}, 'subs': [{'stat': 'Res', 'value': 16}, {'stat': 'DefP', 'value': 8}, {'stat': 'Eff', 'value': 7}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 2700}, 'subs': [{'stat': 'CDmg', 'value': 13}, {'stat': 'Def', 'value': 26}, {'stat': 'AtkP', 'value': 20}, {'stat': 'CChance', 'value': 5}], 'set': 'Hit'}
+{'ilvl': 70, 'enhance': 14, 'grade': 'Heroic', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 1982}, 'subs': [{'stat': 'CDmg', 'value': 10}, {'stat': 'CChance', 'value': 8}, {'stat': 'HPP', 'value': 12}, {'stat': 'Eff', 'value': 6}], 'set': 'Critical'}
+{'ilvl': 70, 'enhance': 12, 'grade': 'Heroic', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 1699}, 'subs': [{'stat': 'Res', 'value': 10}, {'stat': 'Spd', 'value': 4}, {'stat': 'HPP', 'value': 8}, {'stat': 'AtkP', 'value': 5}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Rare', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 2700}, 'subs': [{'stat': 'AtkP', 'value': 7}, {'stat': 'CChance', 'value': 12}, {'stat': 'Def', 'value': 27}, {'stat': 'CDmg', 'value': 12}], 'set': 'Critical'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Rare', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 2700}, 'subs': [{'stat': 'AtkP', 'value': 13}, {'stat': 'Eff', 'value': 15}, {'stat': 'CChance', 'value': 3}, {'stat': 'DefP', 'value': 4}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Rare', 'slot': 'Helmet', 'main': {'stat': 'HP', 'value': 2700}, 'subs': [{'stat': 'CChance', 'value': 9}, {'stat': 'HPP', 'value': 10}, {'stat': 'Eff', 'value': 11}, {'stat': 'Spd', 'value': 1}], 'set': 'Critical'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Yecklace', 'main': {'stat': 'CDmg', 'value': 65}, 'subs': [{'stat': 'Eff', 'value': 31}, {'stat': 'CChance', 'value': 3}, {'stat': 'Atk', 'value': 38}, {'stat': 'AtkP', 'value': 15}], 'set': 'Hit'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Epic', 'slot': 'Yecklace', 'main': {'stat': 'CDmg', 'value': 65}, 'subs': [{'stat': 'Spd', 'value': 3}, {'stat': 'DefP', 'value': 22}, {'stat': 'HPP', 'value': 13}, {'stat': 'AtkP', 'value': 15}], 'set': 'Speed'}
+{'ilvl': 85, 'enhance': 14, 'grade': 'Heroic', 'slot': 'Necklace', 'main': {'stat': 'HPP', 'value': 50}, 'subs': [{'stat': 'CDmg', 'value': 7}, {'stat': 'AtkP', 'value': 19}, {'stat': 'Eff', 'value': 9}, {'stat': 'Atk', 'value': 42}], 'set': 'Critical'}
+{'ilvl': 70, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Necklace', 'main': {'stat': 'CDmg', 'value': 55}, 'subs': [{'stat': 'CChance', 'value': 2}, {'stat': 'Eff', 'value': 4}, {'stat': 'Spd', 'value': 13}, {'stat': 'Atk', 'value': 34}], 'set': 'Attack'}
+{'ilvl': 85, 'enhance': 15, 'grade': 'Heroic', 'slot': 'Ring', 'main': {'stat': 'HPP', 'value': 60}, 'subs': [{'stat': 'Eff', 'value': 5}, {'stat': 'Res', 'value': 22}, {'stat': 'AtkP', 'value': 11}, {'stat': 'CChance', 'value': 3}], 'set': 'Critical'}
+{'ilvl': 60, 'enhance': 0, 'grade': 'Heroic', 'slot': 'Ring', 'main': {'stat': 'Res', 'value': 10}, 'subs': [{'stat': 'Def', 'value': 23}, {'stat': 'Atk', 'value': 30}, {'stat': 'DefP', 'value': 4}], 'set': 'Rage'}
+{'ilvl': 70, 'enhance': 15, 'grade': 'Epic', 'slot': 'Ripc', 'main': {'stat': 'HPP', 'value': 50}, 'subs': [{'stat': 'AtkP', 'value': 15}, {'stat': 'CDmg', 'value': 8}, {'stat': 'Eff', 'value': 15}, {'stat': 'HP', 'value': 167}], 'set': 'Speed'}
+{'ilvl': 71, 'enhance': 15, 'grade': 'Fpic', 'slot': 'Bocts', 'main': {'stat': 'Spd', 'value': 35}, 'subs': [{'stat': 'HPP', 'value': 12}, {'stat': 'AtkP', 'value': 12}, {'stat': 'DefP', 'value': 22}, {'stat': 'CChance', 'value': 4}], 'set': 'Speed'}
+{'ilvl': 67, 'enhance': 0, 'grade': 'Epic', 'slot': 'Pacts', 'main': {'stat': 'HPP', 'value': 10}, 'subs': [{'stat': 'DefP', 'value': 7}, {'stat': 'CChance', 'value': 4}, {'stat': 'Res', 'value': 7}, {'stat': 'Eff', 'value': 7}], 'set': 'Health'}
+{'ilvl': 77, 'enhance': 15, 'grade': 'Pic', 'slot': 'Scats', 'main': {'stat': 'AtkP', 'value': 50}, 'subs': [{'stat': 'HPP', 'value': 20}, {'stat': 'Spd', 'value': 3}, {'stat': 'CChance', 'value': 9}, {'stat': 'Eff', 'value': 4}], 'set': 'Lifesteal'}
