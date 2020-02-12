@@ -9,7 +9,8 @@ import numpy as np
 import random
 from functions import *
 from matplotlib import pyplot as plt
-#from verification import gear
+from verification import inventory
+from compare import compare
 
 resolution = "1600"
 files = [
@@ -17,15 +18,6 @@ files = [
     "screenshots/ss10.png"]
 marks = ["e7/top.jpg", "e7/mark.png"]
 coords = COORDS[resolution]
-
-# for debugging
-def draw(img, xy=None):
-    if xy != None:
-        img = img.copy()
-        cv2.rectangle(img, (xy[1][0], xy[0][0]), (xy[1][1], xy[0][1]), (255, 0, 0), 2)
-    plt.subplot(1,1,1), plt.imshow(img), plt.show()
-
-
 
 def analyze(img, debug=False):
     # img is an array
@@ -48,20 +40,20 @@ def analyze(img, debug=False):
 
 
     export = {}
-    # for k in top_coords:
-    #     crds = top_coords[k]
-    #     data = process(k, top_box_g[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]], top_box[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]])
-    #     if k == 'LVL':
-    #         export["ilvl"] = digit_filter(data.replace('S', '5').replace('B', '8').replace('a', '8'))
-    #
-    #     if k == 'PLUS':
-    #         export["enhance"] = digit_filter(
-    #             data.replace('S', '5').replace('B', '8').replace('a', '8').replace('19', '15'))
-    #
-    #     if k == 'TYPE':
-    #         export["grade"] = char_filter(data.split(' ')[0])
-    #         export["slot"] = char_filter(data.split(' ')[1].split('\n')[0])
+    for k in top_coords:
+        if k != 'PLUS': continue
+        crds = top_coords[k]
+        data = process(k, top_box_g[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]], top_box[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]])
+        if k == 'LVL':
+            export["ilvl"] = digit_filter(data.replace('S', '5').replace('B', '8').replace('a', '8'))
 
+        if k == 'PLUS':
+            export["enhance"] = digit_filter(
+                data.replace('S', '5').replace('B', '8').replace('a', '8').replace('19', '15'))
+
+        if k == 'TYPE':
+            export["grade"] = char_filter(data.split(' ')[0])
+            export["slot"] = char_filter(data.split(' ')[1].split('\n')[0])
     BOTTOM_X = x2 - coords["TOP_BOX"]["WIDTH"]
 
     temp_bot = cv2.imread(coords['MARKS']['BOTTOM'], 0)
@@ -78,12 +70,6 @@ def analyze(img, debug=False):
 
     for k in bottom_coords:
         crds = bottom_coords[k]
-        sss = bottom_box[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]]
-        if k == "SET":
-            draw(sss)
-            exit()
-        else:
-            continue
         data = process(k, bottom_box_g[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]], bottom_box[crds[0][0]:crds[0][1], crds[1][0]:crds[1][1]])
         if k == 'MAIN':
             export["main"] = {'stat': stat_converter(data), 'value': digit_filter(data)}
@@ -96,15 +82,14 @@ def analyze(img, debug=False):
     return export
 
 from jsondiff import diff
-for file in range(1, 35):
-    # xx = 5
-    # if file != xx: continue
-    # if file == xx:
-    #     e = analyze(cv2.imread("screenshots/"+str(file)+".png"), True)
-    e = analyze(cv2.imread("screenshots/" + str(file) + ".png"))
-    print(e)
-    # v = gear[file]
-    # r = e == v
+for file in range(1, 115):
+    xx = 8
+    if file != xx: continue
+    if file == xx:
+        e = analyze(cv2.imread("screenshots/"+str(file)+".png"), True)
+    # e = analyze(cv2.imread("screenshots/" + str(file) + ".png"))
+    # v = inventory[file-1]
+    # compare(file, v, e)
     # if r:
     #     print(file, e==v)
     # else:

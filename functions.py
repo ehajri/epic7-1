@@ -2,7 +2,7 @@ import cv2
 from pytesseract import image_to_string
 from PIL import Image
 from matplotlib import pyplot as plt
-
+import numpy as np
 TOP_IMG = 'e7/top.jpg'
 BOTTOM_IMG = 'e7/bottom.jpg'
 
@@ -24,14 +24,14 @@ COORDS = {
             "BOTTOM": "e7/bottom2.png"
         },
         "TOP": {
-            "LVL": [[35, 82], [58, 116]],
-            "PLUS": [[13, 65], [220, 270]],
-            "TYPE": [[35, 155], [280, 650]]
+            "LVL": [[35, 82], [78, 136]],
+            "PLUS": [[13, 65], [220, 280]],
+            "TYPE": [[35, 155], [287, 650]]
         },
         "BOTTOM": {
-            "MAIN": [[25, 110], [105, 665]],
-            "SUBS": [[150, 400], [25, 655]],
-            "SET": [[460, 525], [120, 435]]
+            "MAIN": [[25, 110], [125, 665]],
+            "SUBS": [[150, 400], [45, 665]],
+            "SET": [[440, 505], [120, 435]]
         },
         "TOP_BOX": {
             "HEIGHT": 246,
@@ -46,6 +46,13 @@ COORDS = {
 }
 export = {"processVersion": "1", "heroes": [], "items": []}
 
+# for debugging
+def draw(img, xy=None):
+    if xy != None:
+        img = img.copy()
+        cv2.rectangle(img, (xy[1][0], xy[0][0]), (xy[1][1], xy[0][1]), (255, 0, 0), 2)
+    plt.subplot(1,1,1), plt.imshow(img), plt.show()
+
 # refactor this function
 def process(k, imgg, img):
     if not(k in ['LVL', 'PLUS', 'TYPE']):
@@ -56,10 +63,11 @@ def process(k, imgg, img):
             3)
         return image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
     if k == 'TYPE':
-        proc = cv2.medianBlur(
-            cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
-            3)
-        x = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
+        # proc = cv2.medianBlur(
+        #     cv2.threshold(cv2.resize(img, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
+        #     3)
+        img[np.where((img <= [40, 40, 40]).all(axis=2))] = [255, 255, 255]
+        x = image_to_string(Image.fromarray(img), lang='eng', config='--psm 6')
         return x.replace('delmet', 'Helmet')
 
     thresh = cv2.THRESH_BINARY
