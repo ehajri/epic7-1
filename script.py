@@ -1,32 +1,24 @@
-from PIL import Image
-from pytesseract import image_to_string
-from string import ascii_lowercase, digits
-import pytesseract
-import imageio
-import cv2
-import imageio
-import numpy as np
-import random
+#!/usr/bin/python
+import sys
+import time
 from functions import *
-from matplotlib import pyplot as plt
-from verification import inventory
-from compare import compare
-
+from PIL import ImageGrab
+import numpy as np
 resolution = "1600"
-files = [
-    #"screenshots/ss2.png", "screenshots/ss3.png", "screenshots/ss4.png", "screenshots/ss1.jpg", "screenshots/ss5.png", "screenshots/ss6.png", "screenshots/ss7.png",
-    "screenshots/ss10.png"]
-marks = ["e7/top.jpg", "e7/mark.png"]
 coords = COORDS[resolution]
 
-def analyze(img, debug=False):
-    # img is an array
+def analyze(img):
     mark = cv2.imread(coords['MARKS']['TOP'], 0)
     res = cv2.matchTemplate(cv2.cvtColor(img, cv2.COLOR_BGR2GRAY), mark, cv2.TM_CCOEFF_NORMED)
+    cv2.imshow('', res)
+    cv2.imshow('i', img)
+
+    cv2.waitKey()
+    cv2.destroyAllWindows()
     minv, maxv, min_loc, max_loc = cv2.minMaxLoc(res)
     if maxv < 0.9:
-        print("Not found")
-        return
+        print('invalid screen')
+        return None
     TB_H = coords["TOP_BOX"]["HEIGHT"]
     TB_W = coords["TOP_BOX"]["WIDTH"]
     y1 = max_loc[1]
@@ -49,7 +41,7 @@ def analyze(img, debug=False):
 
         if k == 'PLUS':
             export["enhance"] = digit_filter(
-                data.replace('S', '5').replace('B', '8').replace('a', '8').replace('19', '15'))
+                data.replace('S', '5').replace('B', '8').replace('a', '8').replace('+h', '4').replace('1g', '14'))
 
         if k == 'TYPE':
             export["grade"] = char_filter(data.split(' ')[0])
@@ -63,8 +55,6 @@ def analyze(img, debug=False):
     BB = coords["BOTTOM_BOX"]
     bottom_box = img[max_loc[1] + BB['SHIFT']:max_loc[1] + BB['HEIGHT'] + BB['SHIFT'], BOTTOM_X:BOTTOM_X + BB['WIDTH']]
     bottom_box_g = cv2.cvtColor(bottom_box, cv2.COLOR_BGR2GRAY)
-
-
 
     bottom_coords = coords["BOTTOM"]
 
@@ -81,29 +71,18 @@ def analyze(img, debug=False):
             export['set'] = char_filter(data.split(' Set')[0])
     return export
 
-from jsondiff import diff
-for file in range(1, 115):
-    xx = 6
-    if file != xx: continue
-    if file == xx:
-        e = analyze(cv2.imread("screenshots/"+str(file)+".png"), True)
-    # e = analyze(cv2.imread("screenshots/" + str(file) + ".png"))
-    # v = inventory[file-1]
-    # compare(file, v, e)
-    # if r:
-    #     print(file, e==v)
-    # else:
-    #     print(file, "diff:", e)
+def main_loop():
+    while 1:
+        time.sleep(5)
+        wtf = ImageGrab.grab()
+        wtf = cv2.cvtColor(np.array(wtf), cv2.COLOR_RGB2BGR)
+        d = analyze(wtf)
+        if d != None:
+            print(d)
 
-# for f in files:
-#     for m in marks:
-#         mark = cv2.imread(m, 0)
-#         imgg = cv2.imread(f)
-#         res = cv2.matchTemplate(cv2.cvtColor(imgg, cv2.COLOR_BGR2GRAY), mark, cv2.TM_CCOEFF_NORMED)
-#         minv, maxv, min_loc, max_loc = cv2.minMaxLoc(res)
-#         if maxv < 0.9:
-#             print("Not found", m)
-#         else:
-#             # debugging
-#             analyze(cv2.imread(f))
-
+if __name__ == "__main__":
+    try:
+        main_loop()
+    except KeyboardInterrupt:
+        sys.stderr.write('\nExiting by user request.\n')
+        sys.exit(0)

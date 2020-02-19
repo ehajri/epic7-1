@@ -1,23 +1,8 @@
 import cv2
 from pytesseract import image_to_string
 from PIL import Image
-from matplotlib import pyplot as plt
 import numpy as np
-from colorlist import BackgroundColorDetector
-TOP_IMG = 'e7/top.jpg'
-BOTTOM_IMG = 'e7/bottom.jpg'
 
-TOPBOX_HEIGHT = 160
-TOPBOX_WIDTH = 450
-BOTTOMBOX_HEIGHT = 335
-BOTTOMBOX_WIDTH = 450
-BOTTOMBOX_SHIFT = 25
-LVL_COORD = [[19, 44], [37, 66]]
-PLUS_COORD = [[11, 34], [139, 168]]
-TYPE_COORD = [[20, 70], [172, 432]]
-MAIN_COORD = [[8, 70], [65, 435]]
-SUBS_COORD = [[98, 255], [25, 435]]
-SET_COORD = [[280, 340], [76, 435]]
 COORDS = {
     "1600": {
         "MARKS": {
@@ -45,127 +30,34 @@ COORDS = {
         }
     }
 }
-export = {"processVersion": "1", "heroes": [], "items": []}
 plus_mark = cv2.imread('./e7/plus.png')
 
-
-# for debugging
-def draw(img, xy=None):
-    if xy != None:
-        img = img.copy()
-        cv2.rectangle(img, (xy[1][0], xy[0][0]), (xy[1][1], xy[0][1]), (255, 0, 0), 2)
-    plt.subplot(1,1,1), plt.imshow(img), plt.show()
-
-def plus_mode1(imgg, img, debug):
+def plus_mode1(img):
     test = cv2.bitwise_not(img)
     test = cv2.resize(test, (0, 0), fx=0.5, fy=0.5)
 
     data = image_to_string(Image.fromarray(test), lang='eng', config='--psm 7')
-    if debug: cv2.imshow('invert', test)
     return data
 
-def plus_mode2(imgg, img, debug):
-    img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
-
-    img[np.where((img >= [120, 120, 120]).all(axis=2))] = [0, 255, 0]
-    img[np.where((img <= [50, 50, 50]).all(axis=2))] = [255, 255, 255]
-    img[np.where((img == [0, 255, 0]).all(axis=2))] = [0, 0, 0]
-
-    proc = cv2.resize(img, (0, 0), fx=10, fy=10)
-    if debug: cv2.imshow('img', proc)
-    proc = cv2.cvtColor(proc, cv2.COLOR_BGR2GRAY)
-    if debug: cv2.imshow('gray', proc)
-    data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-    return data
-
-def lvl_mode1(imgg, img, debug):
-    if debug:
-        cv2.imshow('orig', img)
-
+def lvl_mode1(img):
     test = cv2.bitwise_not(img)
     test = cv2.resize(test, (0, 0), fx=0.5, fy=0.5)
     data = image_to_string(Image.fromarray(test), lang='eng', config='--psm 7')
-    if debug:
-        print(data)
-        cv2.imshow('invert', test)
-
-    # thresh = cv2.THRESH_BINARY
-    # low = 50
-    # while low <= 125:
-    #     proc = cv2.cvtColor(cv2.medianBlur(
-    #         cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 200, thresh)[1],
-    #         3), cv2.COLOR_GRAY2RGB)
-    #     if debug: cv2.imshow('low-' + str(low), proc)
-    #     data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-    #     if debug: print(data)
-    #     if not any(i.isdigit() for i in data):
-    #         if low == 50:
-    #             low = 100
-    #         elif low == 100:
-    #             low = 125
-    #         else:
-    #             break
-    #     else:
-    #         break
-    cv2.waitKey()
-    cv2.destroyAllWindows()
     return data
 
-def lvl_mode2(imgg, img, debug):
-    thresh = cv2.THRESH_BINARY
-    low = 50
-    while low <= 125:
-        # proc = cv2.cvtColor(cv2.medianBlur(
-        #     cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
-        #     3), cv2.COLOR_GRAY2RGB)
-        proc = cv2.cvtColor(cv2.medianBlur(
-            cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 200, thresh)[1],
-            3), cv2.COLOR_GRAY2RGB)
-        # plt.subplot(1,1,1), plt.imshow(proc), plt.show()
-        data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-        if not any(i.isdigit() for i in data):
-            if low == 50:
-                low = 100
-            elif low == 100:
-                low = 125
-            else:
-                break
-        else:
-            break
-    return data
-
-# refactor this function
-def process(k, imgg, img, debug=False):
+def process(k, imgg, img):
     if not(k in ['LVL', 'PLUS', 'TYPE']):
-        if debug:
-            cv2.imshow('orig', imgg)
         thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
         low = 0
         proc = cv2.medianBlur(
             cv2.threshold(cv2.resize(imgg, (0, 0), fx=2, fy=2), low, 255, thresh)[1],
             3)
-        if debug:
-            cv2.imshow('proc', proc)
 
         data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
-        if debug:
-            cv2.waitKey()
-            cv2.destroyAllWindows()
         return data
     if k == 'TYPE':
-        # proc = cv2.medianBlur(
-        #     cv2.threshold(cv2.resize(img, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
-        #     3)
-        if debug:
-            cv2.imshow('type', img)
         img[np.where((img <= [40, 40, 40]).all(axis=2))] = [255, 255, 255]
         x = image_to_string(Image.fromarray(img), lang='eng', config='--psm 6')
-        if debug:
-            print(x)
-            cv2.imshow('type', img)
-        if debug:
-            cv2.waitKey()
-            cv2.destroyAllWindows()
         return x.replace('delmet', 'Helmet')
 
     if k == 'PLUS':
@@ -174,37 +66,12 @@ def process(k, imgg, img, debug=False):
         if np.amax(res) <= threshold:
             return '0'
 
-        data = plus_mode1(imgg, img, debug)
-
-        if debug:
-            cv2.waitKey()
-            cv2.destroyAllWindows()
+        data = plus_mode1(img)
 
         return data
 
     # LVL
-    return lvl_mode1(imgg, img, debug)
-
-    # proc = cv2.cvtColor(cv2.medianBlur(
-    #     cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
-    #     3), cv2.COLOR_GRAY2RGB)
-    # plt.subplot(1, 1, 1), plt.imshow(proc), plt.show()
-    # data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-    # if not any(i.isdigit() for i in data):
-    #     low = 100
-    #     proc = cv2.cvtColor(cv2.medianBlur(
-    #         cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[
-    #             1], 3), cv2.COLOR_GRAY2RGB)
-    #     plt.subplot(1,1,1), plt.imshow(proc), plt.show()
-    #     data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-    #     if not any(i.isdigit() for i in data):
-    #         low = 125
-    #         proc = cv2.cvtColor(cv2.medianBlur(
-    #             cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255,
-    #                           thresh)[1], 3), cv2.COLOR_GRAY2RGB)
-    #         plt.subplot(1, 1, 1), plt.imshow(proc), plt.show()
-    #         data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
-
+    return lvl_mode1(img)
 
 def stat_converter(stat):
     result = ''
@@ -242,36 +109,3 @@ def digit_filter(val):
 
 def char_filter(val):
     return ''.join(filter(str.isalpha, val)).capitalize()
-
-
-def fetch_data(k, top_coords, item, top_box, bottom_box):
-    for k in top_coords.keys():
-        data = process(k, top_box[top_coords[k][0][0]:top_coords[k][0][1], top_coords[k][1][0]:top_coords[k][1][1]])
-        if k == 'type':
-            item["rarity"] = char_filter(data.split(' ')[0])
-            item["slot"] = char_filter(data.split(' ')[1].split('\n')[0])
-        if k == 'level':
-            item["level"] = digit_filter(data.replace('S', '5').replace('B', '8').replace('a', '8'))
-        if k == 'plus':
-            item["ability"] = digit_filter(data.replace('S', '5').replace('B', '8').replace('a', '8'))
-
-    bot_coords = {'main': MAIN_COORD,
-                  'subs': SUBS_COORD,
-                  'set': SET_COORD}
-    for k in bot_coords.keys():
-        data = process(k, bottom_box[bot_coords[k][0][0]:bot_coords[k][0][1], bot_coords[k][1][0]:bot_coords[k][1][1]])
-        if k == 'main':
-            # print(data)
-            stat = stat_converter(data)
-            val = digit_filter(data)
-            item["mainStat"] = [stat, val]
-        if k == 'subs':
-            # print(data.split('\n'))
-            for n, entry in enumerate(data.split('\n')):
-                stat = stat_converter(entry)
-                val = digit_filter(entry.replace('T%', '7%'))
-                item['subStat' + str(n + 1)] = [stat, val]
-        if k == 'set':
-            # print(data)
-            item["set"] = char_filter(data.split(' Set')[0])
-        export["items"].append(item)

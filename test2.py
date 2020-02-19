@@ -1,7 +1,6 @@
 import sys
 from functions import *
 from glob import glob
-from verification import inventory as inv
 from os import path
 import cProfile, pstats, io
 from pstats import SortKey
