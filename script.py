@@ -83,7 +83,7 @@ def analyze(img, debug=False):
 
 from jsondiff import diff
 for file in range(1, 115):
-    xx = 8
+    xx = 6
     if file != xx: continue
     if file == xx:
         e = analyze(cv2.imread("screenshots/"+str(file)+".png"), True)

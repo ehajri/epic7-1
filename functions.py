@@ -3,6 +3,7 @@ from pytesseract import image_to_string
 from PIL import Image
 from matplotlib import pyplot as plt
 import numpy as np
+from colorlist import BackgroundColorDetector
 TOP_IMG = 'e7/top.jpg'
 BOTTOM_IMG = 'e7/bottom.jpg'
 
@@ -45,6 +46,8 @@ COORDS = {
     }
 }
 export = {"processVersion": "1", "heroes": [], "items": []}
+plus_mark = cv2.imread('./e7/plus.png')
+
 
 # for debugging
 def draw(img, xy=None):
@@ -53,23 +56,62 @@ def draw(img, xy=None):
         cv2.rectangle(img, (xy[1][0], xy[0][0]), (xy[1][1], xy[0][1]), (255, 0, 0), 2)
     plt.subplot(1,1,1), plt.imshow(img), plt.show()
 
-# refactor this function
-def process(k, imgg, img):
-    if not(k in ['LVL', 'PLUS', 'TYPE']):
-        thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
-        low = 0
-        proc = cv2.medianBlur(
-            cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
-            3)
-        return image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
-    if k == 'TYPE':
-        # proc = cv2.medianBlur(
-        #     cv2.threshold(cv2.resize(img, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
-        #     3)
-        img[np.where((img <= [40, 40, 40]).all(axis=2))] = [255, 255, 255]
-        x = image_to_string(Image.fromarray(img), lang='eng', config='--psm 6')
-        return x.replace('delmet', 'Helmet')
+def plus_mode1(imgg, img, debug):
+    test = cv2.bitwise_not(img)
+    test = cv2.resize(test, (0, 0), fx=0.5, fy=0.5)
 
+    data = image_to_string(Image.fromarray(test), lang='eng', config='--psm 7')
+    if debug: cv2.imshow('invert', test)
+    return data
+
+def plus_mode2(imgg, img, debug):
+    img = cv2.resize(img, (0, 0), fx=0.5, fy=0.5)
+
+    img[np.where((img >= [120, 120, 120]).all(axis=2))] = [0, 255, 0]
+    img[np.where((img <= [50, 50, 50]).all(axis=2))] = [255, 255, 255]
+    img[np.where((img == [0, 255, 0]).all(axis=2))] = [0, 0, 0]
+
+    proc = cv2.resize(img, (0, 0), fx=10, fy=10)
+    if debug: cv2.imshow('img', proc)
+    proc = cv2.cvtColor(proc, cv2.COLOR_BGR2GRAY)
+    if debug: cv2.imshow('gray', proc)
+    data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
+    return data
+
+def lvl_mode1(imgg, img, debug):
+    if debug:
+        cv2.imshow('orig', img)
+
+    test = cv2.bitwise_not(img)
+    test = cv2.resize(test, (0, 0), fx=0.5, fy=0.5)
+    data = image_to_string(Image.fromarray(test), lang='eng', config='--psm 7')
+    if debug:
+        print(data)
+        cv2.imshow('invert', test)
+
+    # thresh = cv2.THRESH_BINARY
+    # low = 50
+    # while low <= 125:
+    #     proc = cv2.cvtColor(cv2.medianBlur(
+    #         cv2.threshold(~cv2.cvtColor(cv2.resize(img, (0, 0), fx=5, fy=5), cv2.COLOR_BGR2GRAY), low, 200, thresh)[1],
+    #         3), cv2.COLOR_GRAY2RGB)
+    #     if debug: cv2.imshow('low-' + str(low), proc)
+    #     data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 7')
+    #     if debug: print(data)
+    #     if not any(i.isdigit() for i in data):
+    #         if low == 50:
+    #             low = 100
+    #         elif low == 100:
+    #             low = 125
+    #         else:
+    #             break
+    #     else:
+    #         break
+    cv2.waitKey()
+    cv2.destroyAllWindows()
+    return data
+
+def lvl_mode2(imgg, img, debug):
     thresh = cv2.THRESH_BINARY
     low = 50
     while low <= 125:
@@ -91,6 +133,57 @@ def process(k, imgg, img):
         else:
             break
     return data
+
+# refactor this function
+def process(k, imgg, img, debug=False):
+    if not(k in ['LVL', 'PLUS', 'TYPE']):
+        if debug:
+            cv2.imshow('orig', imgg)
+        thresh = cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU
+        low = 0
+        proc = cv2.medianBlur(
+            cv2.threshold(cv2.resize(imgg, (0, 0), fx=2, fy=2), low, 255, thresh)[1],
+            3)
+        if debug:
+            cv2.imshow('proc', proc)
+
+        data = image_to_string(Image.fromarray(proc), lang='eng', config='--psm 6')
+        if debug:
+            cv2.waitKey()
+            cv2.destroyAllWindows()
+        return data
+    if k == 'TYPE':
+        # proc = cv2.medianBlur(
+        #     cv2.threshold(cv2.resize(img, (0, 0), fx=5, fy=5),0, 155, cv2.THRESH_BINARY_INV | cv2.THRESH_OTSU)[1],
+        #     3)
+        if debug:
+            cv2.imshow('type', img)
+        img[np.where((img <= [40, 40, 40]).all(axis=2))] = [255, 255, 255]
+        x = image_to_string(Image.fromarray(img), lang='eng', config='--psm 6')
+        if debug:
+            print(x)
+            cv2.imshow('type', img)
+        if debug:
+            cv2.waitKey()
+            cv2.destroyAllWindows()
+        return x.replace('delmet', 'Helmet')
+
+    if k == 'PLUS':
+        res = cv2.matchTemplate(img, plus_mark, cv2.TM_CCOEFF_NORMED)
+        threshold = 0.8
+        if np.amax(res) <= threshold:
+            return '0'
+
+        data = plus_mode1(imgg, img, debug)
+
+        if debug:
+            cv2.waitKey()
+            cv2.destroyAllWindows()
+
+        return data
+
+    # LVL
+    return lvl_mode1(imgg, img, debug)
 
     # proc = cv2.cvtColor(cv2.medianBlur(
     #     cv2.threshold(cv2.resize(imgg, (0, 0), fx=5, fy=5), low, 255, thresh)[1],
